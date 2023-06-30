@@ -97,6 +97,7 @@ public class SchedulingController {
             throw new PetNotFoundException("Pet não encontrado.");
         }
 
+        scheduling.setId(id);
         scheduling = schedulingService.updateScheduling(scheduling);
         SchedulingDTO schedulingDTO = new SchedulingDTO();
         schedulingDTO.setId(scheduling.getId());

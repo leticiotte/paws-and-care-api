@@ -109,7 +109,7 @@ public class SchedulingService {
     }
 
     public Scheduling updateScheduling(Scheduling scheduling) {
-        return schedulingRepository.insert(scheduling);
+        return schedulingRepository.save(scheduling);
     }
 
     public void deleteSchedule(String id) {
