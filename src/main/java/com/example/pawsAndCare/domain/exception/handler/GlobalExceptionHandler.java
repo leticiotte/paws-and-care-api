@@ -1,8 +1,6 @@
 package com.example.pawsAndCare.domain.exception.handler;
 
-import com.example.pawsAndCare.domain.exception.CustomerDependencyException;
-import com.example.pawsAndCare.domain.exception.CustomerNotFoundException;
-import com.example.pawsAndCare.domain.exception.DuplicatedDocumentException;
+import com.example.pawsAndCare.domain.exception.*;
 import com.example.pawsAndCare.domain.exception.Error;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +24,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomerDependencyException.class)
     public ResponseEntity<Error> handleCustomerDependencyException(CustomerDependencyException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new Error(ex.getMessage()));
+    }
+
+    @ExceptionHandler(PetNotFoundException.class)
+    public ResponseEntity<Error> handlePetNotFoundException(PetNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new Error(ex.getMessage()));
+    }
+
+    @ExceptionHandler(SchedulingConflictException.class)
+    public ResponseEntity<Error> handleSchedulingConflictException(SchedulingConflictException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new Error(ex.getMessage()));
     }

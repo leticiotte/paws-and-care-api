@@ -21,8 +21,8 @@ public class PetService {
     private CustomerRepository customerRepository;
 
     public List<PetDTO> getPetsByCustomerId(String id) {
-        List<Pet> list = petRepository.findByCustomerId(id);
-        List<PetDTO> listPetsDto = list.stream().map(item -> {
+        List<Pet> pets = petRepository.findByCustomerId(id);
+        return pets.stream().map(item -> {
             PetDTO petDTO = new PetDTO();
             petDTO.setId(item.getId());
             petDTO.setName(item.getName());
@@ -33,22 +33,11 @@ public class PetService {
             petDTO.setCustomerName(customer.get().getName());
             return petDTO;
         }).collect(Collectors.toList());
-        return listPetsDto;
     }
 
     public List<PetDTO> getPetsBySearch(String q) {
-        List<PetDTO> list = petRepository.getPetBySearch(q);
-        list.stream().map(item -> {
-            Optional<Customer> customer = customerRepository.findById(item.getCustomerId());
-            item.setCustomerName(customer.get().getName());
-            return item;
-        });
-        return list;
-    }
-
-    public List<PetDTO> getAllPets() {
-        List<Pet> list = petRepository.findAll();
-        List<PetDTO> listPetsDto = list.stream().map(item -> {
+        List<Pet> pets = petRepository.findPetsBySearch(q);
+        return pets.stream().map(item -> {
             PetDTO petDTO = new PetDTO();
             petDTO.setId(item.getId());
             petDTO.setName(item.getName());
@@ -59,7 +48,21 @@ public class PetService {
             petDTO.setCustomerName(customer.get().getName());
             return petDTO;
         }).collect(Collectors.toList());
-        return listPetsDto;
+    }
+
+    public List<PetDTO> getAllPets() {
+        List<Pet> pets = petRepository.findAll();
+        return pets.stream().map(item -> {
+            PetDTO petDTO = new PetDTO();
+            petDTO.setId(item.getId());
+            petDTO.setName(item.getName());
+            petDTO.setCustomerId(item.getCustomerId());
+            petDTO.setType(item.getType());
+            petDTO.setBreed(item.getBreed());
+            Optional<Customer> customer = customerRepository.findById(item.getCustomerId());
+            petDTO.setCustomerName(customer.get().getName());
+            return petDTO;
+        }).collect(Collectors.toList());
     }
 
     public Pet createPet(Pet pet) {
